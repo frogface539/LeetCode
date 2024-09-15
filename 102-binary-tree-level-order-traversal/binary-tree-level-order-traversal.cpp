@@ -22,8 +22,8 @@ public:
         q.push(root);
 
         while (!q.empty()) {
-            vector<int> temp;  // Temporary storage for current level nodes
-            int levelSize = q.size();  // Number of nodes at the current level
+            vector<int> temp;  
+            int levelSize = q.size();  
             
             for (int i = 0; i < levelSize; ++i) {
                 TreeNode* front = q.front();
@@ -39,7 +39,7 @@ public:
                 }
             }
             
-            ans.push_back(temp);  // Add the current level to the answer
+            ans.push_back(temp);  
         }
 
         return ans;
