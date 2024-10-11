@@ -1,22 +1,34 @@
 class Solution {
 public:
-    int solve(vector<int>& coins, int amount,unordered_map<int,int>&memo){
-        if(amount==0) return 0;
-        if(amount<0) return INT_MAX;
-        if(memo.find(amount)!=memo.end()) return memo[amount];
-        int m = INT_MAX;
-        for(auto i: coins){
-            int res = solve(coins,amount-i,memo);
-            if(res!=INT_MAX){
-                m = min(m,res+1);
+    int solve(vector<int>& coins, int amount , vector<int>& dp){
+        if(amount == 0){
+            return 0;
+        }
+
+        if(dp[amount] != -1){
+            return dp[amount];
+        }
+
+        int minCoins = INT_MAX;
+        for(int i = 0 ; i<coins.size() ; i++){
+            if(coins[i] <= amount){
+                int recAns = solve(coins , amount - coins[i] , dp);
+                if(recAns != INT_MAX){
+                    int coinsUsed = 1 + recAns;
+                    minCoins = min(minCoins , coinsUsed);
+                }
             }
         }
-        memo[amount]=m;
-        return memo[amount];
+        dp[amount] = minCoins;
+        return dp[amount];
     }
 
     int coinChange(vector<int>& coins, int amount) {
-        unordered_map<int,int>memo;
-        return solve(coins,amount,memo)==INT_MAX ? -1 : solve(coins,amount,memo);
+        vector<int>dp(amount+1 , -1);
+        int ans = solve(coins , amount , dp);
+        if(ans == INT_MAX){
+            return -1;
+        }
+        return ans;
     }
 };
