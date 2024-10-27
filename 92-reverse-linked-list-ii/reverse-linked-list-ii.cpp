@@ -1,7 +1,7 @@
 class Solution {
 public:
     ListNode* reverseBetween(ListNode* head, int left, int right) {
-        if (!head || left == right) {
+        if (head == NULL || left == right) {
             return head; 
         }
 
@@ -13,9 +13,8 @@ public:
             prev = prev->next;
         }
 
-        // Step 2: Reverse the sublist from 'left' to 'right'
         ListNode* curr = prev->next;
-        ListNode* nextNode = nullptr;
+        ListNode* nextNode = NULL;
         for (int i = 0; i < right - left; i++) {
             nextNode = curr->next;
             curr->next = nextNode->next;
