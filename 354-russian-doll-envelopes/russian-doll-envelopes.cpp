@@ -11,7 +11,7 @@ public:
         });
  
         vector<int> heights;
-        for (const auto& envelope : envelopes) {
+        for (auto envelope : envelopes) {
             heights.push_back(envelope[1]);
         }
        
