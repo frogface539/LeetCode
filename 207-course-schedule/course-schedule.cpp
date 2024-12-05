@@ -21,8 +21,8 @@ public:
 
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<int> adj[numCourses];
-        for (auto& edge : prerequisites) {
-            adj[edge[1]].push_back(edge[0]);
+        for (auto i : prerequisites) {
+            adj[i[1]].push_back(i[0]);
         }
 
         unordered_map<int, bool> visited;
