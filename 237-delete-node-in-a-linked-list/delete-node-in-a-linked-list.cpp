@@ -12,7 +12,7 @@ public:
         ListNode* temp = node -> next;
         node -> val = temp -> val;
         node -> next = temp -> next;
-        temp -> next = NULL;
-        delete temp;
+       
+        
     }
 };
