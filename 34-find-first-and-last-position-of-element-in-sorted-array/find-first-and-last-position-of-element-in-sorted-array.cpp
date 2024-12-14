@@ -1,41 +1,45 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> ans(2, -1); // Initialize the result vector with -1s
+    vector<int> searchRange(vector<int>& arr, int target) {
+        vector<int>ans(2,-1);
+        int start = 0;
+        int end = arr.size() - 1;
 
-        // Find the first occurrence
-        int s = 0;
-        int e = nums.size() - 1; // Corrected the end boundary to size() - 1
-
-        while (s <= e) {
-            int mid = s + (e - s) / 2;
-            if (nums[mid] == target) {
+        //first occ
+        while(start <= end){
+            int mid = (start+end)/2;
+            if(arr[mid]==target){
                 ans[0] = mid;
-                e = mid - 1; // Continue to search in the left half
-            } else if (nums[mid] > target) {
-                e = mid - 1;
-            } else {
-                s = mid + 1;
+                end = mid - 1;
+            }
+
+            else if(arr[mid] > target){
+                end = mid - 1;
+            }
+
+            else{
+                start = mid + 1;
             }
         }
 
-        // Reset the search boundaries
-        s = 0;
-        e = nums.size() - 1;
-
-        // Find the last occurrence
-        while (s <= e) {
-            int mid = s + (e - s) / 2;
-            if (nums[mid] == target) {
+        start = 0;
+        end = arr.size() - 1;
+        //last occ
+        while(start <= end){
+            int mid = (start+end)/2;
+            if(arr[mid]==target){
                 ans[1] = mid;
-                s = mid + 1; // Continue to search in the right half
-            } else if (nums[mid] > target) {
-                e = mid - 1;
-            } else {
-                s = mid + 1;
+                start = mid + 1;
+            }
+
+            else if(arr[mid] > target){
+                end = mid - 1;
+            }
+
+            else{
+                start = mid + 1;
             }
         }
-
         return ans;
     }
 };
