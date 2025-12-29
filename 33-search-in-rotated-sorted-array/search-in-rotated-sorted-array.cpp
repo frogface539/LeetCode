@@ -1,27 +1,24 @@
 class Solution {
 public:
-    int getPivotIndex(vector<int>& arr){
+    int findPivotIndex(vector<int>& arr){
+        int n = arr.size();
         int s = 0;
-        int e = arr.size() - 1;
-        int mid = s + (e-s)/2;
-        while(s<=e){
-            mid = s+(e-s)/2;
-            if(s==e){
-                return s; //single element array
-            }
+        int e = n - 1;
 
-            else if(mid < e && arr[mid] > arr[mid+1]){
+        while(s <= e){
+            int mid = (s + e) / 2;
+
+            if(mid < e && arr[mid] > arr[mid + 1]){
                 return mid;
             }
 
-            else if(mid > s && arr[mid-1] > arr[mid]){
+            if(mid > s && arr[mid] < arr[mid - 1]){
                 return mid - 1;
             }
 
-            else if(arr[s] > arr[mid]){
+            if(arr[s] > arr[mid]){
                 e = mid - 1;
             }
-
             else{
                 s = mid + 1;
             }
@@ -29,20 +26,18 @@ public:
         return -1;
     }
 
-    int BinarySearch(int start , int end , vector<int>& arr , int element){
-        int mid = (start + end) /2;
+    int BS(int start , int end , vector<int>& arr , int element){
+        int mid = (start + end) / 2;
 
         while(start <= end){
-            mid = (start + end) /2;
+            mid = (start + end) / 2;
             if(arr[mid] == element){
                 return mid;
             }
-
             else if(arr[mid] > element){
                 end = mid - 1;
             }
-
-            else if(arr[mid] < element){
+            else{
                 start = mid + 1;
             }
         }
@@ -50,20 +45,17 @@ public:
     }
 
     int search(vector<int>& arr, int target) {
-       int pivotIndex = getPivotIndex(arr);
-       int ans = -1;
+        int pivot = findPivotIndex(arr);
 
-       //line A
-       if(target >= arr[0] && target <= arr[pivotIndex]){
-        int ans = BinarySearch(0, pivotIndex, arr, target);
-        return ans;
+        if(pivot == -1){
+            return BS(0, arr.size() - 1, arr, target);
         }
 
-       //line B
-       else{
-        int ans = BinarySearch(pivotIndex + 1, arr.size()-1, arr, target);
-        return ans;
-       }
-       return -1;
+        if(target >= arr[0] && target <= arr[pivot]){
+            return BS(0, pivot, arr, target);
+        }
+        else{
+            return BS(pivot + 1, arr.size() - 1, arr, target);
+        }
     }
 };
