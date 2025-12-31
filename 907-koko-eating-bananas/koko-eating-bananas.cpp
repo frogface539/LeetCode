@@ -1,31 +1,30 @@
 class Solution {
 public:
+    bool canEatBanana(vector<int>& piles, int mid, int h){
+        int hours = 0;
+        for(int& i : piles){
+            hours = hours + (i/mid);
 
-    int check(vector<int>& piles, int h,int mid){
-        int ans=0;
-        for(int i=0;i<piles.size();i++){
-            ans+=(piles[i]/mid);
-            if(piles[i]%mid!=0){
-                ans++;
+            if(i%mid != 0){
+                hours++;
             }
         }
-        return ans<=h;
+        return hours<=h;
     }
-    int minEatingSpeed(vector<int>& piles, int h) {
-        sort(piles.begin(),piles.end());
-        int n=piles.size();
-        int low=1;
-        int high=piles[n-1];
 
-        while(low<high){
-            int mid=(low+high)/2;
-            if(check(piles,h,mid)){
-                high=mid;
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int s = 1;
+        int e = *max_element(begin(piles), end(piles));
+
+        while(s<e){
+            int mid = (s+e)/2;
+            if(canEatBanana(piles,mid,h)){
+                e=mid;
             }
             else{
-                low=mid+1;
+                s = mid+1;
             }
         }
-        return low;
+        return s;
     }
 };
