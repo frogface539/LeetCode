@@ -1,21 +1,20 @@
 class Solution {
 public:
-    void permutationHelper(vector<int>&nums , vector<vector<int>>& ans , int start){
-        if(start == nums.size()){
+    void solve(vector<int> nums, vector<vector<int>>& ans, int i){
+        if(i >= nums.size()){
             ans.push_back(nums);
             return;
         }
 
-        for(int i = start ; i < nums.size() ; i++){
-            swap(nums[i] , nums[start]);
-            permutationHelper(nums , ans , start + 1);
-            swap(nums[i] , nums[start]);
+        for(int j=i ; j<nums.size() ; j++){
+            swap(nums[i],nums[j]);
+            solve(nums,ans,i+1);
         }
     }
 
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>>ans;
-        permutationHelper(nums , ans , 0);
+        solve(nums,ans,0);
         return ans;
     }
 };
