@@ -1,55 +1,46 @@
 class Solution {
-    char q, x;
-    int n;
-    vector<vector<string>> ans;
-    vector<string> board;
-    string temp, row;
-    vector<int> row_visited,
-                col_visited,
-                dig_visited1,
-                dig_visited2;
-    bool safe(int r, int c){
-        return !(
-                    row_visited[r] ||
-                    col_visited[c] ||
-                    dig_visited1[n - 1 + r - c] ||
-                    dig_visited2[r + c]
-                );
-    }
-    void update(int r, int c, int value){
-        if(value)
-            row[c] = q,
-            board.push_back(row);
-        else
-            row[c] = x,
-            board.pop_back();
-        row_visited[r] = value,
-        col_visited[c] = value,
-        dig_visited1[n - 1 + r - c] = value,
-        dig_visited2[r + c] = value;
-    }
-    void rec(int r){
-        if(r == n)
-            ans.push_back(board);
-        row = temp;
-        for(int c = 0; c < n; c++)
-            if(safe(r, c))
-                update(r, c, 1),
-                rec(r + 1),
-                update(r, c, 0);
-        return;
-    }
 public:
+    bool isSafe(vector<string>& board, int row, int col) {
+        // Check same column
+        for (int i = row; i >= 0; i--) {
+            if (board[i][col] == 'Q')
+                return false;
+        }
+
+        // Check upper-left diagonal
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        // Check upper-right diagonal
+        for (int i = row, j = col; i >= 0 && j < board.size(); i--, j++) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        return true;
+    }
+
+    void solve(vector<string>& board, vector<vector<string>>& result, int row) {
+        if (row == board.size()) {
+            result.push_back(board);
+            return;
+        }
+
+        for (int col = 0; col < board.size(); col++) {
+            if (isSafe(board, row, col)) {
+                board[row][col] = 'Q';
+                solve(board, result, row + 1);
+                board[row][col] = '.';
+            }
+        }
+    }
+
     vector<vector<string>> solveNQueens(int n) {
-        q = 'Q', x = '.';
-        this->n = n;
-        row_visited.resize(n + 1, 0),
-        col_visited.resize(n + 1, 0),
-        dig_visited1.resize(2*n + 1, 0),
-        dig_visited2.resize(2*n + 1, 0);
-        for(int i = 0; i < n; i++)
-            temp.push_back(x);
-        rec(0);
-        return ans;
+        vector<string> board(n, string(n, '.'));
+        vector<vector<string>> result;
+        solve(board, result, 0);
+        return result;
     }
 };
