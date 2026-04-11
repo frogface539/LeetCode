@@ -1,38 +1,34 @@
 class Solution {
 public:
-    bool solve(vector<int>& nums , int targetSum , int index , vector<vector<int>>& dp){
+    bool solve(vector<int>& arr, int index, int targetSum, vector<vector<int>>& dp){
         if(targetSum == 0){
             return true;
         }
-
-        if(targetSum < 0 || index == nums.size()){
+        if(targetSum < 0 || index >= arr.size()){
             return false;
         }
 
-        if(dp[targetSum][index] != -1){
-            return dp[targetSum][index];
+        if(dp[index][targetSum] != -1){
+            return dp[index][targetSum];
         }
 
-        bool include = solve(nums , targetSum - nums[index] , index + 1 , dp);
-        bool exclude = solve(nums , targetSum, index + 1 , dp);
+        int include = solve(arr,index+1,targetSum-arr[index],dp);
+        int exclude = solve(arr,index+1,targetSum,dp);
 
-        dp[targetSum][index] = include || exclude;
-        return dp[targetSum][index];
+        return dp[index][targetSum] = include || exclude;
     }
 
     bool canPartition(vector<int>& nums) {
         int sum = 0;
-        for(int i = 0; i<nums.size() ; i++){
+        for(int i=0 ; i<nums.size(); i++){
             sum = sum + nums[i];
         }
 
-        if((sum % 2) != 0){
+        if((sum%2) != 0){
             return false;
         }
-
-        int targetSum = sum/2;
-        vector<vector<int>>dp(targetSum + 1,vector<int>(nums.size() , -1));
-        int index = 0;
-        return solve(nums , targetSum , index , dp);
+        int n = nums.size();
+        vector<vector<int>> dp(n+1, vector<int>((sum/2)+1,-1));
+        return solve(nums,0,sum/2,dp);
     }
 };
