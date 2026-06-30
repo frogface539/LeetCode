@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        // int ans = 0;
+        // for(int i=0 ; i<s.length() ; i++){
+        //     int a = 0;
+        //     int b= 0;
+        //     int c = 0;
+
+        //     for(int j=i ; j<s.length() ; j++){
+        //         if(s[j] == 'a'){
+        //             a++;
+        //         }
+        //         else if(s[j] == 'b'){
+        //             b++;
+        //         }
+        //         else{
+        //             c++;
+        //         }
+
+        //         if(a>0 && b>0 && c>0){
+        //             ans++;
+        //         }
+        //     }
+        // }
+        // return ans;
+
+        int ans = 0;
+        int i=0;
+        int j=0;
+        int n=s.length();
+        vector<int>mp(3,0);
+        
+        while(j<n){
+            char ch = s[j];
+            mp[ch-'a']++;
+
+            while(mp[0] > 0 && mp[1] > 0 && mp[2] > 0){
+                ans += (n-j);
+
+                mp[s[i]-'a']--;
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
