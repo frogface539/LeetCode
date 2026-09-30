@@ -1,40 +1,31 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    TreeNode* prev = 0;
-    TreeNode* FV = 0;
-    TreeNode* SV = 0;
-    void solve(TreeNode* curr){
-        if(curr == NULL){
+    void inOrder(TreeNode* root, vector<TreeNode*>& trav){
+        if(root == NULL){
             return;
         }
 
-        solve(curr -> left);
-        
-        if(prev != NULL && curr -> val < prev -> val){
-            
-            if(FV == NULL){
-                FV = prev;
-            }
-            SV = curr;
-        }
-        prev = curr;
-        solve(curr -> right);
+        inOrder(root->left, trav);
+        trav.push_back(root);
+        inOrder(root->right, trav);
     }
+
     void recoverTree(TreeNode* root) {
-        solve(root);
-        if(FV != NULL && SV != NULL){
-            swap(FV -> val , SV->val);
+        vector<TreeNode*> trav;
+        inOrder(root, trav);
+
+        TreeNode* first = NULL;
+        TreeNode* second = NULL;
+
+        for(int i = 1; i < trav.size(); i++){
+            if(trav[i]->val < trav[i-1]->val){
+                if(first == NULL){
+                    first = trav[i-1];
+                }
+                second = trav[i];
+            }
         }
+
+        swap(first->val, second->val);
     }
 };
