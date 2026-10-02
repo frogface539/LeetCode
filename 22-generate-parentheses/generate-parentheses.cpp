@@ -1,23 +1,43 @@
 class Solution {
 public:
-    void solve(int n, int open, int close, string output, vector<string>& ans) {
-        if (open == n && close == n) {
-            ans.push_back(output);
+    bool isValid(string& output){
+        int count = 0;
+
+        for(auto& ch:output){
+            if(ch == '('){
+                count++;
+            }
+            else{
+                count--;
+            }
+            if(count<0){
+                return false;
+            }
+        }
+        return count==0;
+    }
+
+    void solve(int n, vector<string>& ans, string& output){
+        if(output.size() == 2*n){
+            if(isValid(output)){
+                ans.push_back(output);
+            }
             return;
         }
 
-        if (open < n) {
-            solve(n, open + 1, close, output + '(', ans);
-        }
+        output.push_back('(');
+        solve(n,ans,output);
+        output.pop_back();
 
-        if (close < open) {
-            solve(n, open, close + 1, output + ')', ans);
-        }
+        output.push_back(')');
+        solve(n,ans,output);
+        output.pop_back();
     }
 
     vector<string> generateParenthesis(int n) {
-        vector<string> ans;
-        solve(n, 0, 0, "", ans);
+        vector<string>ans;
+        string output;
+        solve(n,ans,output);
         return ans;
     }
 };
