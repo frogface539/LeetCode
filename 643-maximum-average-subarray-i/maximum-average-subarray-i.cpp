@@ -1,40 +1,28 @@
 class Solution {
 public:
     double findMaxAverage(vector<int>& nums, int k) {
-        // Brute Force
-        // int i=0;
-        // int j=k-1;
-        // int maxSum = INT_MIN;
-        // while(j<nums.size()){
-        //     int sum = 0;
-        //     for(int t=i ; t<=j ; t++){
-        //         sum = sum+nums[t];
-        //     }
-        //     i++;
-        //     j++;
-        //     maxSum = max(maxSum,sum);
-        // }
-        // double avg = maxSum/(double)k;
-        // return avg;
+        int i = 0;
+        int j = 0;
+        int n = nums.size();
 
-        // optimal approach
-        int i=0;
-        int j=k-1;
-        int sum = 0;
+        double sum = 0;
+        double maxi = INT_MIN;
 
-        for(int t=i; t<=j; t++){
-            sum = sum + nums[t];
+        while(j < n) {
+            sum += nums[j];
+
+            if(j - i + 1 < k) {
+                j++;
+            }
+            else if(j - i + 1 == k) {
+                maxi = max(maxi, sum);
+
+                sum -= nums[i];
+                i++;
+                j++;
+            }
         }
-        j++;
-        int maxSum = sum;
-        while(j<nums.size()){
-            sum = sum - nums[i];
-            i++;
-            sum = sum + nums[j];
-            j++;
-            maxSum = max(sum,maxSum);
-        }
-        return maxSum/(double)k;
 
+        return maxi / k;
     }
 };
