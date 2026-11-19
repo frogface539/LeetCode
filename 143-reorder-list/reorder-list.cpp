@@ -10,31 +10,59 @@
  */
 class Solution {
 public:
-    ListNode* front;
-    void solve(ListNode* curr){
-        if(curr==NULL){
-            return;
-        }
-        solve(curr->next);
-
-        if(front==NULL){
-            return;
+    ListNode* middle(ListNode* head){
+        if(head == NULL){
+            return NULL;
         }
 
-        if(front==curr||front->next==curr){
-            curr->next=NULL;
-            front=NULL;
-            return;
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while(fast != NULL){
+            fast = fast->next;
+            if(fast != NULL){
+                slow = slow->next;
+                fast = fast->next;
+            }
         }
-        
-        ListNode* temp=front->next;
-        front->next=curr;
-        curr->next=temp;
-        front=temp;
+        return slow;
     }
 
-    void reorderList(ListNode* head){
-        front=head;
-        solve(head);
+    ListNode* reverse(ListNode* head){
+        ListNode* prev = NULL;
+
+        while(head != NULL){
+            ListNode* curr = head;
+            head = head->next;
+
+            curr->next = prev;
+            prev = curr;
+        }
+        return prev;
+    }
+    void reorderList(ListNode* head) {
+
+        if(head == NULL || head->next == NULL) {
+            return;
+        }
+
+        ListNode* mid = middle(head);
+        ListNode* second = reverse(mid->next);
+
+        mid->next = NULL;
+
+        ListNode* first = head;
+
+        while(first != NULL && second != NULL) {
+
+            ListNode* temp1 = first->next;
+            ListNode* temp2 = second->next;
+
+            first->next = second;
+            second->next = temp1;
+
+            first = temp1;
+            second = temp2;
+        }
     }
 };
