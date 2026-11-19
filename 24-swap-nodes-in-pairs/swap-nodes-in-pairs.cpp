@@ -15,10 +15,9 @@ public:
             return head;
         }
 
-        ListNode* recList = swapPairs(head -> next -> next);
-        head -> next -> next = head;
-        ListNode* newHead = head -> next;
-        head -> next = recList;
-        return newHead;
+        ListNode* temp =  head->next;;
+        head->next = swapPairs(head->next->next);
+        temp->next = head;
+        return temp;
     }
 };
